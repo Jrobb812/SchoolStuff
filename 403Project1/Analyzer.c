@@ -1,4 +1,5 @@
-#include "C:\Users\jrobb\Documents\personalprograms\403Project1\Analyzer.h"
+#include "Analyzer.h"
+#include "stdio.h"
 int main(){
     //initialize file pointer to NULL 
     FILE *infile = NULL; 
