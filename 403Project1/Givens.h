@@ -1,5 +1,5 @@
 #ifndef GIVENS_H#define GIVENS_H
-//#include <regex.h>
+#include <regex.h>
 #include <stdio.h>
 #define FALSE 0
 #define TRUE !FALSE

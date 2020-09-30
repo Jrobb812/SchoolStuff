@@ -1,4 +1,4 @@
-
+#include "Parser.h"
 int i;
 
 _Bool parser(struct lexics *someLexics, int numberOfLexics) {
@@ -13,6 +13,7 @@ void function(struct lexics *aLex) {
 void header(struct lexics *aLex) {
     if (i = 0) {
         if (aLex[i].token == "VARTYPE") {
+            
 
         }
     }
