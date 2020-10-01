@@ -5,3 +5,4 @@ _Bool parser(struct lexics *someLexics, int numberOfLexics);
 
 void function();
 void header();
+void argDec();

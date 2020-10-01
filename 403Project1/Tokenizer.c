@@ -4,78 +4,78 @@
 
 _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf) {
 
-     fopen(inf, "r");
      int pos = 0;
      int lexPos = 0;
+     char *buf[LEXEME_MAX];
     
-     while (fscanf(inf," %s", LEXEME_MAX) == 1) {
+     while (fgets(buf, LEXEME_MAX, inf) != NULL) {
 
-        if (charAt(pos) == '{') {
-            aLex[lexPos].token = "LEFT_BRACKET"; 
+        if ((buf[pos]) == '{') {
+            aLex[lexPos].token = LEFT_BRACKET; 
             *aLex[lexPos].lexeme = '{';
             pos++;
         }
-        else if (charAt(pos) == '}') {
+        else if ((buf[pos]) == '}') {
             *aLex[lexPos].lexeme = '{';
-            aLex[lexPos].token = "RIGHT_BRACKET";
+            aLex[lexPos].token = RIGHT_BRACKET;
             pos++;
         }
-        else if (charAt(pos) == '(') { 
+        else if ((buf[pos]) == '(') { 
             *aLex[lexPos].lexeme = '(';
-            aLex[lexPos].token = "LEFT_PARENTHESIS";
+            aLex[lexPos].token = LEFT_PARENTHESIS;
             pos++;
         }
-        else if (charAt(pos) == ')') { 
+        else if ((buf[pos]) == ')') { 
             *aLex[lexPos].lexeme = ')';
-            aLex[lexPos].token = "RIGHT_PARENTHESIS";
+            aLex[lexPos].token = RIGHT_PARENTHESIS;
             pos++;
         }
-        else if (isAlpha(charAt(pos))) {
-            if (charAt(pos) == 'w' && charAt(pos + 1) == 'h' && charAt(pos + 2) == 'i' && charAt(pos + 3) == 'l' && charAt(pos + 4) == 'e') {
+        else if (isAlpha((buf[pos]))) {
+            if ((buf[pos]) == 'w' && (buf[pos + 1]) == 'h' &&  (buf[pos + 2]) == 'i' &&  (buf[pos + 3]) == 'l' &&  (buf[pos + 4]) == 'e') {
                 *aLex[lexPos].lexeme = "while";
-                aLex[lexPos].token = "WHILE_KEYWORD";
+                aLex[lexPos].token = WHILE_KEYWORD;
                 pos =+ 5;
             }
-            else if (charAt(pos) == 'r' && charAt(pos + 1) == 'e' && charAt(pos + 2) == 't' && charAt(pos + 3) == 'u' && charAt(pos + 4) == 'r' && charAt(pos + 5) == 'n') {
+            else if ((buf[pos]) == 'r' &&  (buf[pos + 1]) == 'e' &&  (buf[pos + 2]) == 't' &&  (buf[pos + 3]) == 'u' &&  (buf[pos + 4]) == 'r' &&  (buf[pos + 5]) == 'n') {
                 *aLex[lexPos].lexeme = "return"; 
-                aLex[lexPos].token ="RETURN_KEYWORD";
+                aLex[lexPos].token = RETURN_KEYWORD;
                 pos =+ 6;
             }
-            else if ((charAt(pos) == 'i' && charAt(pos + 1) == 'n' && charAt(pos + 2) == 't') || (charAt(pos) == 'v' && charAt(pos + 1) == 'o' && charAt(pos + 2) == 'i' && charAt(pos + 3) == 'd')) {
-                aLex[lexPos].token = "VARTYPE";
-                if (charAt(pos) == 'v') {
+            else if (((buf[pos]) == 'i' &&  (buf[pos + 1]) == 'n' &&  (buf[pos + 2]) == 't') || ((buf[pos]) == 'v' &&  (buf[pos + 1]) == 'o' &&  (buf[pos + 2]) == 'i' &&  (buf[pos + 3]) == 'd')) {
+                aLex[lexPos].token = VARTYPE;
+                if ((buf[pos]) == 'v') {
                     *aLex[lexPos].lexeme = "void";
-                    pos + 4;
+                    pos =+ 4;
                 }
                 else { 
                     *aLex[lexPos].lexeme = "int";
-                    pos + 3;
+                    pos =+ 3;
                 }
             }
             else {
                 int trackPos = pos;
-                while((isAlpha(charAt(pos))) || (isDigit(charAt(pos)))) trackPos++;
+                while((isAlpha((buf[pos]))) || (isDigit(buf, pos))) trackPos++;
                 int strSize = trackPos - pos;
                 char* buildStr = malloc(strSize * sizeof(char));
                 for (int i = pos; i < trackPos; i++) {
-                     buildStr[i] = charAt(i);
+                     buildStr[i] = buf[i];
                 }
-                aLex[lexPos].token = "IDENTIFIER";
+                aLex[lexPos].token = IDENTIFIER;
                 *aLex[lexPos].lexeme = buildStr;
                 pos = trackPos;
             }
         }
-        else if (isDigit(charAt(pos))) { 
+        else if (isDigit(*buf, pos)) { 
             int trackPos = pos;
-            while (isDigit(charAt(pos))) trackPos++;
-            if (isAlpha(charAt(trackPos))) {
+            while (isDigit(*buf, pos)) trackPos++;
+            if (isAlpha(buf[trackPos])) {
                 trackPos++;
                 int strSize = trackPos - pos;
                 char* buildStr = malloc(strSize * sizeof(char));
                 for (int i = pos; i < trackPos; i++) {
-                     buildStr[i] = charAt(i);
+                     buildStr[i] = buf[i];
                 }
-                aLex[lexPos].token = "IDENTIFIER";
+                aLex[lexPos].token = IDENTIFIER;
                 *aLex[lexPos].lexeme = buildStr;
                 pos = trackPos;
             }
@@ -83,47 +83,47 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf) {
                 int strSize = trackPos - pos;   
                 char* buildStr = malloc(strSize * sizeof(char));
                 for (int i = lexPos; i < trackPos; i++) {
-                     buildStr[i] = charAt(i);
+                     buildStr[i] = buf[i];
                 }
-                aLex[lexPos].token = "NUMBER";
+                aLex[lexPos].token = NUMBER;
                 *aLex[lexPos].lexeme = buildStr;
                 pos = trackPos;
             }
         }
-        else if (charAt(pos) == '+' || charAt(pos) == '*' || charAt(pos) == '=' || charAt(pos) == '!' || charAt(pos) == '%') {
-            if (charAt(pos == '=')) {    
-                if (charAt(pos + 1) == '=') {
+        else if ((buf[pos]) == '+' || (buf[pos]) == '*' || (buf[pos]) == '=' || (buf[pos]) == '!' || (buf[pos]) == '%') {
+            if ((pos == '=')) {    
+                if ((buf[pos + 1]) == '=') {
                     *aLex[lexPos].lexeme = "==";
-                    aLex[lexPos].token = "BINOP";
+                    aLex[lexPos].token = BINOP;
                     pos =+ 2;
                 }
                 else {
                     *aLex[lexPos].lexeme = '='; 
-                    aLex[lexPos].token == "EQUAL";
+                    aLex[lexPos].token == EQUAL;
                     pos++;
                 }
             }
             else {
-                if (charAt(pos) == '!' && charAt(pos + 1) == '=') {
+                if ((buf[pos]) == '!' && (buf[pos + 1]) == '=') {
                     *aLex[lexPos].lexeme = "!=";
-                    aLex[lexPos].token = "BINOP";
-                    pos += 2;
+                    aLex[lexPos].token = BINOP;
+                    pos =+ 2;
                 }
                 else { 
-                *aLex[lexPos].lexeme = charAt(pos); 
-                aLex[lexPos].token = "BINOP";
+                *aLex[lexPos].lexeme = (buf[pos]); 
+                aLex[lexPos].token = BINOP;
                 pos++;
                 }            
             }
         } 
-        else if (charAt(pos) == ',') { 
+        else if ((buf[pos]) == ',') { 
             *aLex[lexPos].lexeme = ','; 
-            aLex[lexPos].token = "COMMA";
+            aLex[lexPos].token = COMMA;
             pos++;
         }
-        else if (charAt(pos) == ';') {
+        else if ((buf[pos]) == ';') {
             *aLex[lexPos].lexeme = ';';
-            aLex[lexPos].token = "EOL";
+            aLex[lexPos].token = EOL;
             pos++;
         }
         else {
@@ -135,4 +135,11 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf) {
      *numLex = pos;
 
      return TRUE;
+}
+_Bool isDigit(char *buf, int pos) {
+    if (buf[pos] == 1 || buf[pos] == 2 || buf[pos] == 3 || buf[pos] == 4 || buf[pos] == 5 || buf[pos] == 6 || buf[pos] == 7 || buf[pos] == 8 || buf[pos] == 9 || buf[pos] == 0) return TRUE;
+    else return FALSE;
+}
+_Bool isAlpha(char *buf, int pos) {
+    if (buf[pos] == )
 }
