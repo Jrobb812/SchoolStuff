@@ -1,7 +1,14 @@
 
 #include "Tokenizer.h"
 
-
+_Bool isDigit(char *buf, int pos) {
+    if (buf[pos] == 1 || buf[pos] == 2 || buf[pos] == 3 || buf[pos] == 4 || buf[pos] == 5 || buf[pos] == 6 || buf[pos] == 7 || buf[pos] == 8 || buf[pos] == 9 || buf[pos] == 0) return TRUE;
+    else return FALSE;
+}
+_Bool isAlpha(char *buf, int pos) {
+    if ((buf[pos] >= 65 && buf[pos] <= 90) || (buf[pos] <= 97 && buf[pos] >= 122)) return TRUE;
+    else return FALSE;
+}
 _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf) {
 
      int pos = 0;
@@ -30,7 +37,7 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf) {
             aLex[lexPos].token = RIGHT_PARENTHESIS;
             pos++;
         }
-        else if (isAlpha((buf[pos]))) {
+        else if (isAlpha(*buf, pos)) {
             if ((buf[pos]) == 'w' && (buf[pos + 1]) == 'h' &&  (buf[pos + 2]) == 'i' &&  (buf[pos + 3]) == 'l' &&  (buf[pos + 4]) == 'e') {
                 *aLex[lexPos].lexeme = "while";
                 aLex[lexPos].token = WHILE_KEYWORD;
@@ -54,7 +61,9 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf) {
             }
             else {
                 int trackPos = pos;
-                while((isAlpha((buf[pos]))) || (isDigit(buf, pos))) trackPos++;
+                while(isAlpha(*buf, pos) || (isDigit(*buf, pos))) {
+                    trackPos++;
+                }
                 int strSize = trackPos - pos;
                 char* buildStr = malloc(strSize * sizeof(char));
                 for (int i = pos; i < trackPos; i++) {
@@ -68,7 +77,7 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf) {
         else if (isDigit(*buf, pos)) { 
             int trackPos = pos;
             while (isDigit(*buf, pos)) trackPos++;
-            if (isAlpha(buf[trackPos])) {
+            if (isAlpha(*buf, trackPos)) {
                 trackPos++;
                 int strSize = trackPos - pos;
                 char* buildStr = malloc(strSize * sizeof(char));
@@ -135,11 +144,4 @@ _Bool tokenizer(struct lexics *aLex, int *numLex, FILE *inf) {
      *numLex = pos;
 
      return TRUE;
-}
-_Bool isDigit(char *buf, int pos) {
-    if (buf[pos] == 1 || buf[pos] == 2 || buf[pos] == 3 || buf[pos] == 4 || buf[pos] == 5 || buf[pos] == 6 || buf[pos] == 7 || buf[pos] == 8 || buf[pos] == 9 || buf[pos] == 0) return TRUE;
-    else return FALSE;
-}
-_Bool isAlpha(char *buf, int pos) {
-    if (buf[pos] == )
 }

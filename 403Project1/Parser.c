@@ -10,7 +10,7 @@ _Bool parser(struct lexics *someLexics, int numberOfLexics) {
 }
 void function(struct lexics *aLex) {
     header(aLex);
-    body(aLex);
+  //  body(aLex);
 }
 void header(struct lexics *aLex) {
     if (i = 0) {
