@@ -20,13 +20,27 @@ class Eliza:
         flag = 1
         print("Goodbye, friend.")
         userInput(flag)
-      isFound = re.compile(r'was+([^.]*)')
+      isFound = re.compile(r'is+([^.]*)')
       isMatch = isFound.findall(user_input)
       if len(isMatch) > 0 and flag == 0:
         isWord = isMatch[0].replace('i', 'you')
         isWord = isMatch.replace('I', 'you')
         isWord = isMatch.replace('me', 'you')
         isWord = isMatch.replace('my', 'your')
+      wasFound = re.compile((r'was+([^.]*)')
+      wasMatch = wasFound.findall(user_input)
+      if len(wasMatch) > 0 and flag == 0:
+        wasWord = wasMatch[0].replace('i', 'you')
+        wasWord = wasMatch.replace('I', 'you')
+        wasWord = wasMatch.replace('me', 'you')
+        wasWord = wasMatch.replace('my', 'your')
+      wasntFound = re.compile((r'wasn\'t+([^.]*)')
+      wasntMatch = wasntFound.findall(user_input)
+      if len(wasntMatch) > 0 and flag == 0:
+        wasntWord = wasntMatch[0].replace('i', 'you')
+        wasntWord = wasMatch.replace('I', 'you')
+        wasntWord = wasMatch.replace('me', 'you')
+        wasntWord = wasMatch.replace('my', 'your')
   def main():
     flag = 0
     while flag != 1:
