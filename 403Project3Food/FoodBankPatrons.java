@@ -53,7 +53,7 @@ class FoodConsumer extends Thread {
                 System.out.println("Taking " + subFood + " food from the food bank.");
                 System.out.println("Balance is now: " + bank.food + ".");
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 }
                 catch (InterruptedException e) {}
             }
